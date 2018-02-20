@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#title           :main.py
+#description     :This program displays an interactive menu on CLI
+#author          :Ziwon Kim, Hu Yao-Chieh
+#date            :
+#version         :0.1
+#usage           :python3 menu.py
+#notes           :
+#python_version  :3.6.3  
+#=======================================================================
+
 # Import the modules needed to run the script.
 import sys, os
  
