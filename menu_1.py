@@ -1,6 +1,6 @@
 def run():
     # Welcome message
-    print("Hello Menu 1 !\n")
+    print("(1) Collection Dropping and Empty Collection Creating!\n")
 
     # Pre-execution menu
     # print("9. Back")

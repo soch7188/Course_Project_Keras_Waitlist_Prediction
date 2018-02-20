@@ -4,15 +4,14 @@ DEFAULT_URL = 'http://course.cse.ust.hk/comp4332/index.html'
 
 def run():
     # Welcome message
-    print("Hello Menu 2 !\n")
+    print("(2) Data Crawling\n")
 
-    print("Enter a URL or a special keyword (e.g. default):")
-    choice = input(" >>  ")
+    choice = input("Enter a URL or a special keyword (e.g. default) >>  ")
     exec_menu(choice)
 
 
     # Main execution
-    print("Collection dropping and empty collection creating are successful")
+    print("Data Crawling is successful and all data are inserted into the database")
     print("Warning: This is a stub.\n")
 
     return
