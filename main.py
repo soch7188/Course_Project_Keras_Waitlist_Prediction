@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #team_no         :29
 #title           :main.py
 #description     :This program displays an interactive menu on CLI
