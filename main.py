@@ -18,7 +18,7 @@
 import sys, os
 
 # Import menu components
-import menu_1
+import menu_1,menu_2,menu_3,menu_4,menu_5
  
 # Main definition - constants
 menu_actions  = {}  
@@ -59,14 +59,20 @@ def exec_menu(choice):
     return
  
 # Menu 1
-# def menu1():
-#     exec_menu(choice)
-#     return
+def menu1():
+    menu_1.run()
+
+    print("9. Back")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
+    return
  
  
 # Menu 2
 def menu2():
-    print("Hello Menu 2 !\n")
+    menu_2.run()
+
     print("9. Back")
     print("0. Quit")
     choice = input(" >>  ")
@@ -75,7 +81,8 @@ def menu2():
 
 # Menu 3
 def menu3():
-    print("Hello Menu 3 !\n")
+    menu_3.run()
+
     print("9. Back")
     print("0. Quit")
     choice = input(" >>  ")
@@ -84,7 +91,8 @@ def menu3():
 
 # Menu 4
 def menu4():
-    print("Hello Menu 4 !\n")
+    menu_4.run()
+
     print("9. Back")
     print("0. Quit")
     choice = input(" >>  ")
@@ -93,7 +101,8 @@ def menu4():
 
 # Menu 5
 def menu5():
-    print("Hello Menu 5 !\n")
+    menu_5.run()
+
     print("9. Back")
     print("0. Quit")
     choice = input(" >>  ")
@@ -115,7 +124,7 @@ def exit():
 # Menu definition
 menu_actions = {
     'main_menu': main_menu,
-    '1': menu_1.run,
+    '1': menu1,
     '2': menu2,
     '3': menu3,
     '4': menu4,
