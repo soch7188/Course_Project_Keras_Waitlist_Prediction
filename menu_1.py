@@ -9,6 +9,8 @@ def run():
     # exec_menu(choice)
 
     # Main execution
+    print("Removing collections...")
+    
     print("Collection dropping and empty collection creating are successful")
     print("Warning: This is a stub.\n")
 
