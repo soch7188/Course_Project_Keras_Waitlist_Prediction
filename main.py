@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #team_no         :29
 #title           :main.py
 #description     :This program displays an interactive menu on CLI
@@ -59,7 +57,7 @@ def exec_menu(choice):
     return
 
 
-# Execute Menu Post
+# Execute Menu [Post]
 def exec_menu_post():
     print("9. Back")
     print("0. Quit")
