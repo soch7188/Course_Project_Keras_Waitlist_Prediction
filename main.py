@@ -57,15 +57,20 @@ def exec_menu(choice):
             print("Invalid selection, please try again.\n")
             menu_actions['main_menu']()
     return
+
+
+# Execute Menu Post
+def exec_menu_post():
+    print("9. Back")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
  
 # Menu 1
 def menu1():
     menu_1.run()
 
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
+    exec_menu_post()
     return
  
  
@@ -73,40 +78,28 @@ def menu1():
 def menu2():
     menu_2.run()
 
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
+    exec_menu_post()
     return
 
 # Menu 3
 def menu3():
     menu_3.run()
 
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
+    exec_menu_post()
     return
 
 # Menu 4
 def menu4():
     menu_4.run()
 
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
+    exec_menu_post()
     return
 
 # Menu 5
 def menu5():
     menu_5.run()
 
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
+    exec_menu_post()
     return
  
 # Back to main menu
