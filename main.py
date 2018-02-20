@@ -16,6 +16,9 @@
 
 # Import the modules needed to run the script.
 import sys, os
+
+# Import menu components
+import menu_1
  
 # Main definition - constants
 menu_actions  = {}  
@@ -56,13 +59,9 @@ def exec_menu(choice):
     return
  
 # Menu 1
-def menu1():
-    print("Hello Menu 1 !\n")
-    print("9. Back")
-    print("0. Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
-    return
+# def menu1():
+#     exec_menu(choice)
+#     return
  
  
 # Menu 2
@@ -116,7 +115,7 @@ def exit():
 # Menu definition
 menu_actions = {
     'main_menu': main_menu,
-    '1': menu1,
+    '1': menu_1.run,
     '2': menu2,
     '3': menu3,
     '4': menu4,
