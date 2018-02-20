@@ -6,7 +6,6 @@ def run():
     ln = input("Input Lecture Number >>  ") # course code
     ts = input("Input Time Slot >>  ") # course code
 
-
     # Main execution
     print("Executing")
     print("N1, N2, N3, N4, N5")
