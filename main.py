@@ -69,6 +69,33 @@ def menu2():
     choice = input(" >>  ")
     exec_menu(choice)
     return
+
+# Menu 3
+def menu3():
+    print("Hello Menu 3 !\n")
+    print("9. Back")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
+    return
+
+# Menu 4
+def menu4():
+    print("Hello Menu 4 !\n")
+    print("9. Back")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
+    return
+
+# Menu 5
+def menu5():
+    print("Hello Menu 5 !\n")
+    print("9. Back")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
+    return
  
 # Back to main menu
 def back():
@@ -87,6 +114,9 @@ menu_actions = {
     'main_menu': main_menu,
     '1': menu1,
     '2': menu2,
+    '3': menu3,
+    '4': menu4,
+    '5': menu5,
     '9': back,
     '0': exit,
 }
