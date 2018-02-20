@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+#team_no         :29
 #title           :main.py
 #description     :This program displays an interactive menu on CLI
-#author          :Ziwon Kim, Hu Yao-Chieh
-#date            :
+#author          :Kim Ziwon(20216497), Hu Yao-Chieh (20216239)
+#phase           :1
 #version         :0.1
 #usage           :python3 menu.py
 #notes           :
 #python_version  :3.6.3  
+#mongodb_version :3.4.10 
+#keras_version   :2.1.1  
+#tf_version      :1.5.0rc0  
 #=======================================================================
 
 # Import the modules needed to run the script.
