@@ -26,8 +26,11 @@ def main_menu():
     
     print("Welcome,\n")
     print("Please choose the menu you want to start:")
-    print("1. Menu 1")
-    print("2. Menu 2")
+    print("1. Collection Dropping and Empty Collection Creating")
+    print("2. Data Crawling")
+    print("3. Course Search")
+    print("4. Waiting List Size Prediction")
+    print("5. Waiting List Size Training")
     print("\n0. Quit")
     choice = input(" >>  ")
     exec_menu(choice)
