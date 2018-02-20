@@ -1,6 +1,6 @@
 def run():
     # Welcome message
-    print("Hello Menu 5 !\n")
+    print("5. Waiting List Size Training !\n")
 
     # Pre-execution menu
     # print("9. Back")
@@ -9,7 +9,9 @@ def run():
     # exec_menu(choice)
 
     # Main execution
-    print("Collection dropping and empty collection creating are successful")
+    print("Executing Training Process ... ")
+
+    print("Waiting list size training is successful")
     print("Warning: This is a stub.\n")
 
     return

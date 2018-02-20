@@ -1,15 +1,15 @@
 def run():
     # Welcome message
-    print("Hello Menu 4 !\n")
+    print("4. Waiting List Size Prediction !\n")
 
-    # Pre-execution menu
-    # print("9. Back")
-    # print("0. Quit")
-    # choice = input(" >>  ")
-    # exec_menu(choice)
+    cc = input("Input Course Code >>  ") # course code
+    ln = input("Input Lecture Number >>  ") # course code
+    ts = input("Input Time Slot >>  ") # course code
+
 
     # Main execution
-    print("Collection dropping and empty collection creating are successful")
+    print("Executing")
+    print("N1, N2, N3, N4, N5")
     print("Warning: This is a stub.\n")
 
     return
