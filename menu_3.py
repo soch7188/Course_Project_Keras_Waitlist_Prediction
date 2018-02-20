@@ -1,4 +1,4 @@
-import os
+import os,menu_3_1,menu_3_2
 
 def run():
     # Welcome message
@@ -18,10 +18,12 @@ def run():
     return
 
 def searchByKeyword():
+    menu_3_1.run()
     print("Course Search by Keyword...")
     return
 
 def searchByWaitingListSize():
+    menu_3_2.run()
     print("Course Search by Keyword...")
     return
 
