@@ -8,6 +8,10 @@ def run():
     # choice = input(" >>  ")
     # exec_menu(choice)
 
+    
+
+
+
     # Main execution
     print("Removing collections...")
     

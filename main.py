@@ -16,7 +16,20 @@
 import sys, os
 
 # Import menu components
+import pymongo
+
 import menu_1,menu_2,menu_3,menu_4,menu_5
+
+# Import Python-MongoDB component
+# Remember to start the MongoDB server before running this Python script
+from pymongo import MongoClient
+
+# Creating Collection
+def createCollection(db):
+    print("Creating Collection...")
+    print("    In MongoDB, there is no need to create a collection explicitly (e.g., \'db.createCollection(\"student\")\').")
+    print("    When we insert the first document into a collection, the collection will be created automatically.")
+
  
 # Main definition - constants
 menu_actions  = {}  
@@ -27,20 +40,37 @@ menu_actions  = {}
  
 # Main menu
 def main_menu():
-    os.system('clear')
-    
-    print("Welcome,\n")
-    print("Please choose the menu you want to start by entering the number:")
-    print("(1) Collection Dropping and Empty Collection Creating")
-    print("(2) Data Crawling")
-    print("(3) Course Search")
-    print("(4) Waiting List Size Prediction")
-    print("(5) Waiting List Size Training")
-    print("\n(0) Quit")
-    choice = input(" >>  ")
-    exec_menu(choice)
- 
-    return
+
+    try:
+        os.system('clear')
+
+        # Making a DB connection
+        print("Making a MongoDB connection...")
+        client = MongoClient("mongodb://localhost:27017")
+
+        # Getting a Database named "university"
+        print("Getting a database named \"university\"")
+        db = client["university"]
+
+        print("Welcome,\n")
+        print("Please choose the menu you want to start by entering the number:")
+        print("(1) Collection Dropping and Empty Collection Creating")
+        print("(2) Data Crawling")
+        print("(3) Course Search")
+        print("(4) Waiting List Size Prediction")
+        print("(5) Waiting List Size Training")
+        print("\n(0) Quit")
+        choice = input(" >>  ")
+        exec_menu(choice)
+
+        # Closing a DB connection
+        print("Closing a DB connection...")
+        client.close()
+
+        return
+
+    except pymongo.errors.ConnectionFailure as error:
+        print("DB Connection Failed! Error Message: \"{}\"".format(error))
  
 # Execute menu
 def exec_menu(choice):
