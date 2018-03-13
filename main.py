@@ -92,6 +92,14 @@ def insertDocument(db):
         print("Document Insertion Failed! Error Message: \"{}\"".format(error))
 
 
+def queryDocument(db, keyword):
+    try:
+        db.course.find({
+            # "cname": {$regex: /Computer/}}
+        })
+    except pymongo.errors.ConnectionFailure as error: 
+        print("Document Query Failed! Error Message: \"{}\"".format(error))
+
 
 
 # Main definition - constants
@@ -114,9 +122,9 @@ def main_menu():
         # Getting a Database named "university"
         print("Getting a database named \"university\"")
         db = client["university"]
-        print(db.getCollectionNames())
+        # print(db.getCollectionNames())
 
-        insertDocument(db)
+        queryDocument(db, "COMP")
 
         print("Welcome,\n")
         print("Please choose the menu you want to start by entering the number:")
