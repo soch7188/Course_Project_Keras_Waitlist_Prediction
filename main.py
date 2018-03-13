@@ -24,13 +24,23 @@ import menu_1,menu_2,menu_3,menu_4,menu_5
 # Remember to start the MongoDB server before running this Python script
 from pymongo import MongoClient
 
-# Creating Collection
-def createCollection(db):
-    print("Creating Collection...")
-    print("    In MongoDB, there is no need to create a collection explicitly (e.g., \'db.createCollection(\"student\")\').")
-    print("    When we insert the first document into a collection, the collection will be created automatically.")
 
- 
+# Try to insert a document
+def insertDocument(db):
+    try:
+        db.student.insert(
+            {
+                "sid": "11112222",
+                "sname": "Ziwon",
+                "byear": 1998
+            }
+        )
+    except pymongo.errors.ConnectionFailure as error: 
+        print("Document Insertion Failed! Error Message: \"{}\"".format(error))
+
+
+
+
 # Main definition - constants
 menu_actions  = {}  
  
@@ -51,6 +61,8 @@ def main_menu():
         # Getting a Database named "university"
         print("Getting a database named \"university\"")
         db = client["university"]
+
+        insertDocument(db)
 
         print("Welcome,\n")
         print("Please choose the menu you want to start by entering the number:")
@@ -162,3 +174,6 @@ menu_actions = {
 if __name__ == "__main__":
     # Launch main menu
     main_menu()
+
+
+
