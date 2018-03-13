@@ -54,9 +54,87 @@ db.course.insert(
             quota: 67,
             enrol: 4,
             avail: 63,
-            wait: 0,
+            wait: 25,
             remarks: "",
             timeSlot: new Date("2018-01-25T09:00:00")
+        },
+        {
+            section: "L1",
+            sectionNumber: 1756,
+            dateTime:
+            {
+
+                weekDay: "Thursday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+            },
+            room: "Rm 5620, Lift 31-32 (70)",
+            instructor: "LEUNG, Wai Ting",
+            quota: 67,
+            enrol: 4,
+            avail: 63,
+            wait: 35,
+            remarks: "",
+            timeSlot: new Date("2018-01-26T09:00:00") //YYYY-mm-ddTHH:MM:ss
+        },
+        {
+            section: "LA1",
+            sectionNumber: 1757,
+            dateTime:
+            {
+
+                weekDay: "Tuesday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+
+            },
+            room: "Rm 4210, Lift 19 (67)",
+            instructor: "LEUNG, Wai Ting",
+            quota: 67,
+            enrol: 4,
+            avail: 63,
+            wait: 36,
+            remarks: "",
+            timeSlot: new Date("2018-01-26T09:00:00")
+        },
+        {
+            section: "L1",
+            sectionNumber: 1756,
+            dateTime:
+            {
+
+                weekDay: "Thursday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+            },
+            room: "Rm 5620, Lift 31-32 (70)",
+            instructor: "LEUNG, Wai Ting",
+            quota: 67,
+            enrol: 4,
+            avail: 63,
+            wait: 136,
+            remarks: "",
+            timeSlot: new Date("2018-01-27T19:00:00") //YYYY-mm-ddTHH:MM:ss
+        },
+        {
+            section: "LA1",
+            sectionNumber: 1757,
+            dateTime:
+            {
+
+                weekDay: "Tuesday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+
+            },
+            room: "Rm 4210, Lift 19 (67)",
+            instructor: "LEUNG, Wai Ting",
+            quota: 67,
+            enrol: 4,
+            avail: 63,
+            wait: 135,
+            remarks: "",
+            timeSlot: new Date("2018-01-27T19:00:00")
         }
     ]
 });
