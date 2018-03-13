@@ -1,3 +1,5 @@
+db = db.getSiblingDB("university")
+
 db.course.insert(
 {
     cid: "COMP 1001",
@@ -34,7 +36,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: new Date("25 January 2018, 09:00")
+            timeRecord: "25 January 2018, 09:00"
         },
         {
             section: "LA1",
@@ -54,7 +56,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: new Date("25 January 2018, 09:00")
+            timeRecord: "25 January 2018, 09:00"
         }
     ]
 });
