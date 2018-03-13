@@ -20,13 +20,10 @@ db.course.createIndex({"cname": "text"})
 
 indexAggregateSortedResult = db.course.aggregate(
     [
-        // { $match: { status: "A" } },
-        { $match: { search: "Multimedia asdfasdf" } },
-        // { $group: { _id: "$cust_id", total: { $sum: "$amount" } } },
+        {$match: {$text: {$search: 'Exploring asdasdf'}}},
         { $unwind: '$sectionList'},
-        { $sort: {section: 1 } },
-        { $project : { _id: 0, cname: 1, credit: 1, sectionList: 0 } },
-        // { $limit: 2 }
+        { $sort: {"sectionList.section": 1 } },
+        { $project : { _id: 0, cname: 1, credit: 1, "sectionList.section": 1, "sectionList.dateTime": 1, "sectionList.quota": 1, "sectionList.enrol": 1, "sectionList.avail": 1, "sectionList.wait": 1 } },
     ]
 )
 
