@@ -40,7 +40,14 @@ db.course.insert(
         {
             section: "LA1",
             sectionNumber: 1757,
-            dateTime: "Tu 03:00PM - 04:50PM",
+            dateTime: 
+            {
+
+                weekDay: "Tuesday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+
+            },
             room: "Rm 4210, Lift 19 (67)",
             instructor: "LEUNG, Wai Ting",
             quota: 67,
