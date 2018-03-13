@@ -114,6 +114,7 @@ def main_menu():
         # Getting a Database named "university"
         print("Getting a database named \"university\"")
         db = client["university"]
+        print(db.getCollectionNames())
 
         insertDocument(db)
 
