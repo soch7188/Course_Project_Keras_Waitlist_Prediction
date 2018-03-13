@@ -26,7 +26,6 @@ db.course.insert(
                 weekDay: "Thursday",
                 startTime: "03:00PM",
                 endTime: "04:50PM",
-
             },
             room: "Rm 5620, Lift 31-32 (70)",
             instructor: "LEUNG, Wai Ting",
@@ -35,7 +34,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: Date("01-25, 09:00")
+            timeRecord: new Date("25 January 2018, 09:00")
         },
         {
             section: "LA1",
@@ -55,7 +54,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: "01-25, 09:00"
+            timeRecord: new Date("25 January 2018, 09:00")
         }
     ]
 });
