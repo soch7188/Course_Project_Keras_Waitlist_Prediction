@@ -1,3 +1,5 @@
+db = db.getSiblingDB("university")
+
 db.course.insert(
 {
     cid: "COMP 1001",

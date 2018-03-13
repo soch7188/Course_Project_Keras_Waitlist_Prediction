@@ -51,6 +51,7 @@ def main_menu():
         # Getting a Database named "university"
         print("Getting a database named \"university\"")
         db = client["university"]
+        print(db.getCollectionNames())
 
         print("Welcome,\n")
         print("Please choose the menu you want to start by entering the number:")
