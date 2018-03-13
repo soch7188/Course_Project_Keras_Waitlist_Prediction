@@ -36,7 +36,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: "25 January 2018, 09:00"
+            timeRecord: new Date("2018-01-25T09:00:00") //YYYY-mm-ddTHH:MM:ss
         },
         {
             section: "LA1",
@@ -56,7 +56,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: "25 January 2018, 09:00"
+            timeRecord: new Date("2018-01-25T09:00:00")
         }
     ]
 });
