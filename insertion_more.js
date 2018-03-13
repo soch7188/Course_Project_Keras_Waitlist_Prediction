@@ -6,9 +6,9 @@ db.course.insert(
     cname: "Exploring Multimedia and Internet Computing",
     category: "COMP",
     credit: 3,
-    courseInfo: 
+    courseInfo:
     {
-        attributes: 
+        attributes:
         [
             "Common Core (S&T) for 2010 & 2011 3Y programs",
             "Common Core (S&T) for 2012 3Y programs",
@@ -16,13 +16,13 @@ db.course.insert(
         ],
         exclusion: "ISOM 2010, any COMP courses of 2000-level or above",
         description: "This course is an introduction to computers and computing tools. It introduces the organization and basic working mechanism of a computer system, including the development of the trend of modern computer system. It covers the fundamentals of computer hardware design and software application development. The course emphasizes the application of the state-of-the-art software tools to solve problems and present solutions via a range of skills related to multimedia and internet computing tools such as internet, e-mail, WWW, webpage design, computer animation, spread sheet charts/figures, presentations with graphics and animations, etc. The course also covers business, accessibility, and relevant security issues in the use of computers and Internet."
-    },      
+    },
     sectionList:
     [
         {
             section: "L1",
             sectionNumber: 1756,
-            dateTime: 
+            dateTime:
             {
 
                 weekDay: "Thursday",
@@ -36,12 +36,12 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: new Date("2018-01-25T09:00:00") //YYYY-mm-ddTHH:MM:ss
+            timeSlot: new Date("2018-01-25T09:00:00") //YYYY-mm-ddTHH:MM:ss
         },
         {
             section: "LA1",
             sectionNumber: 1757,
-            dateTime: 
+            dateTime:
             {
 
                 weekDay: "Tuesday",
@@ -56,7 +56,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: new Date("2018-01-25T09:00:00")
+            timeSlot: new Date("2018-01-25T09:00:00")
         }
     ]
 });

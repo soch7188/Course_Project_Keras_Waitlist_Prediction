@@ -22,7 +22,13 @@ db.course.insert(
         {
             section: "L1",
             sectionNumber: 1756,
-            dateTime: "Th 03:00PM - 04:50PM",
+            dateTime:
+            {
+
+                weekDay: "Thursday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+            },
             room: "Rm 5620, Lift 31-32 (70)",
             instructor: "LEUNG, Wai Ting",
             quota: 67,
@@ -30,12 +36,19 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: "25 January 2018, 09:00"
+            timeSlot: new Date("2018-01-25T09:00:00") //YYYY-mm-ddTHH:MM:ss
         },
         {
             section: "LA1",
             sectionNumber: 1757,
-            dateTime: "Tu 03:00PM - 04:50PM",
+            dateTime:
+            {
+
+                weekDay: "Tuesday",
+                startTime: "03:00PM",
+                endTime: "04:50PM",
+
+            },
             room: "Rm 4210, Lift 19 (67)",
             instructor: "LEUNG, Wai Ting",
             quota: 67,
@@ -43,7 +56,7 @@ db.course.insert(
             avail: 63,
             wait: 0,
             remarks: "",
-            timeRecord: "25 January 2018, 09:00"
+            timeSlot: new Date("2018-01-25T09:00:00")
         }
     ]
 });
