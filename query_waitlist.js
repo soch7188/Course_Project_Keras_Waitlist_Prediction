@@ -1,62 +1,3 @@
-// db = db.getSiblingDB("university")
-//
-//
-// let num_f = 2;
-// let start_ts = ISODate("2018-01-24T00:00:00.000Z");
-// let end_ts = ISODate("2018-01-29T00:00:00.000Z");
-//
-// result = db.course.aggregate(
-//     [
-//
-//         { $unwind: '$sectionList'},
-//         { $match: {"sectionList.timeSlot": {
-//             $gte: start_ts,
-//             $lt: end_ts
-//         }}},
-//         // { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
-//
-//         // { $sort: {"sectionList.section": 1 } },
-//         { $project : {
-//             _id: 0,
-//             cid: 1,
-//             cname: 1,
-//             "sectionList.satisfied": {
-//                 $cond: {
-//                     if: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]},
-//                     then: 1,
-//                     else: 0
-//                 }
-//             },
-//             "sectionList.section": 1,
-//             "sectionList.wait": 1,
-//             "sectionList.timeSlot": 1,
-//             "sectionList.enrol": 1 }
-//         },
-//         { $group: {
-//             _id: {"cid": "$cid"},
-//             // last: { $last: "$sectionList.timeSlot"},
-//             matchedTimeSlots: {
-//                 // $cond: {
-//                 //     if: { $eq: ["sectionList.satisfied", 1]},
-//                 //     then: { $push: "$sectionList.timeSlot"}
-//                 // }
-//                 $push: "$sectionList.timeSlot"
-//
-//                 // $cond: {
-//                 //     if: { $eq: ["sectionList.satisfied", 1]},
-//                 //     then: { $push: {"timeSlot": "$sectionList.timeSlot"}}
-//                 // }
-//             }
-//
-//
-//         }}
-//     ]
-// )
-//
-// printjson(result.toArray());
-
-// -------------------------------- Jeff's Code Above ----------------------------------- //
-
 db = db.getSiblingDB("university")
 
 
@@ -66,60 +7,65 @@ end_ts = ISODate("2018-01-29T00:00:00.000Z");
 
 latestTimeSlotResult = db.course.aggregate([
     { $unwind: '$sectionList'},
-        { $match: {"sectionList.timeSlot": {
+    { $match: {
+        "sectionList.timeSlot": {
             $gte: start_ts,
             $lt: end_ts
-        }}},
-        { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
-        // { $match: { $where:  function() { return $sectionList.wait < num_f * $sectionList.enrol }}},
-
-        // { $sort: {"sectionList.section": 1 } },
-        // { $project : { _id: 0, cid: 1, cname: 1, "sectionList.section": 1, "sectionList.wait": 1, "sectionList.timeSlot": 1, "sectionList.enrol": 1 } },
-        // { $project : { _id: 0, "Course Code": '$cid', "Course Title": '$cname', "No of Units/Credits": "$credit", "Matched Time Slot": "", "sectionList.section": 1, "sectionList.wait": 1, "sectionList.timeSlot": 1 } },
-        { $group: {
-                "_id": "$cid",
-                "LatestTimeSlot": {"$last": "$sectionList.timeSlot"},
-            }
-        },
-])
-
-latestTimeSlot = latestTimeSlotResult.toArray()[0].LatestTimeSlot
+        }
+    }},
+    // { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
+    { $group: {
+        "_id": "$cid",
+        "LatestTimeSlot": {
+            "$last": "$sectionList.timeSlot"
+        }
+    }}
+]);
 
 // printjson(latestTimeSlotResult.toArray())
-// print(latestTimeSlot)
+latestTimeSlot = latestTimeSlotResult.toArray()[0].LatestTimeSlot
 
-result = db.course.aggregate(
-    [
-
+result = db.course.aggregate([
         { $unwind: '$sectionList'},
         { $match: {"sectionList.timeSlot": {
             $gte: start_ts,
             $lt: end_ts
         }}},
-        { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
-        // { $match: { $where:  function() { return $sectionList.wait < num_f * $sectionList.enrol }}},
-
-        // { $sort: {"sectionList.section": 1 } },
-        // { $project : { _id: 0, cid: 1, cname: 1, "sectionList.section": 1, "sectionList.wait": 1, "sectionList.timeSlot": 1, "sectionList.enrol": 1 } },
-        // { $project : { _id: 0, "Course Code": '$cid', "Course Title": '$cname', "No of Units/Credits": "$credit", "Matched Time Slot": "", "sectionList.section": 1, "sectionList.wait": 1, "sectionList.timeSlot": 1 } },
-        // { $group: {
-        //         "_id": "$cid",
-        //         "Course Title": { "$first": "cname" },
-        //         "Section List": {"$push": "$sectionList.timeSlot"},
-        //         "LatestTimeSlot": {"$last": "$sectionList.timeSlot"},
-        //     }
-        // },
-        // { $match: {"sectionList.timeSlot": latestTimeSlot}}
-        // { $match: { "sectionList.timeSlot": {$eq: ["$sectionList.timeSLot" ,latestTimeSlot ] }}}
+        // { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
+        { $project : {
+            _id: 0,
+            cid: 1,
+            cname: 1,
+            credit: 1,
+            // "sectionList.Satisfied": {
+            //     $cond: {
+            //         if: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]},
+            //         then: "Yes",
+            //         else: "No"
+            //     }
+            // },
+            "sectionList.section": 1,
+            "sectionList.dateTime": 1,
+            "sectionList.quota": 1,
+            "sectionList.enrol": 1,
+            "sectionList.avail": 1,
+            "sectionList.wait": 1,
+            "sectionList.timeSlot": 1,
+            }
+        },
+        { $sort: {"cid": -1, "sectionList.section": 1}},
         { $match: { "sectionList.timeSlot": latestTimeSlot }},
-        // { $eq: [ "$qty", 250 ] }
-        {$group: {
+        { $group: {
             "_id": "$cid",
-                "Section List": {"$push" :"$sectionList"},
-        }}
-
+            "Course Code": {"$last": "$cid"},
+            "Course Title": {"$last": "$cname"},
+            "Number of Units/Credits": {"$last": "$credit"},
+            "Matched Time Slot": {"$last": latestTimeSlot},
+            "Section_List": {"$push" :"$sectionList"},
+        }},
+        {$project: {_id: 0}}
     ]
-)
+);
 
 
 printjson(result.toArray());
