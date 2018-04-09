@@ -8,8 +8,8 @@ print(" -------------- Query by Keyword --------------- ")
 // Creating a text index for all fields.
 // db.course.createIndex({"$**": "text"})
 
-// Creating a text index for "cname" field. It can speed up keyword search.
-db.course.createIndex({"cname": "text"})
+// Creating a text index for "cname", and "sectionList.remarks" field. It can speed up keyword search.
+db.course.createIndex({"cname": "text", "sectionList.remarks": "text"})
 
 // INDEX BASED SEARCH
 indexAggregateSortedResult = db.course.aggregate(                       // Aggregation Pipeline that handles multiple mongo executions and returns a single result

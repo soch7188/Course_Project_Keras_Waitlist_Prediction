@@ -13,17 +13,21 @@
 #=======================================================================
 
 # Import the modules needed to run the script.
-import sys, os
-
-# Import menu components
-import pymongo
-
-import menu_1,menu_2,menu_3,menu_4,menu_5
+import sys
+import os
+import subprocess
+import menu_3
+import menu_4
+import menu_5
 
 # Import Python-MongoDB component
 # Remember to start the MongoDB server before running this Python script
 from pymongo import MongoClient
+
 # from datetime import *
+# Import db components
+import pymongo
+# global db
 
 
 # Try to insert a document
@@ -101,51 +105,54 @@ def queryDocument(db, keyword):
         print("Document Query Failed! Error Message: \"{}\"".format(error))
 
 
-
 # Main definition - constants
-menu_actions  = {}  
+menu_actions = {}
+
  
 # =======================
 #     MENUS FUNCTIONS
 # =======================
- 
+
+
+try:
+    # Making a DB connection
+    print("Making a MongoDB connection...")
+    client = MongoClient("mongodb://localhost:27017")
+
+    # Getting a Database named "university"
+    print("Getting a database named \"university\"")
+    db = client["university"]
+
+    # print(db.getCollectionNames())
+
+except pymongo.errors.ConnectionFailure as error:
+    print("DB Connection Failed! Error Message: \"{}\"".format(error))
+
+
 # Main menu
 def main_menu():
 
-    try:
-        os.system('clear')
+    os.system('clear')
+    queryDocument(db, "COMP")
 
-        # Making a DB connection
-        print("Making a MongoDB connection...")
-        client = MongoClient("mongodb://localhost:27017")
+    print("Welcome,\n")
+    print("Please choose the menu you want to start by entering the number:")
+    print("(1) Collection Dropping and Empty Collection Creating")
+    print("(2) Data Crawling")
+    print("(3) Course Search")
+    print("(4) Waiting List Size Prediction")
+    print("(5) Waiting List Size Training")
+    print("\n(0) Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
 
-        # Getting a Database named "university"
-        print("Getting a database named \"university\"")
-        db = client["university"]
-        # print(db.getCollectionNames())
+    # Closing a DB connection
+    print("Closing a DB connection...")
+    client.close()
 
-        queryDocument(db, "COMP")
+    return
 
-        print("Welcome,\n")
-        print("Please choose the menu you want to start by entering the number:")
-        print("(1) Collection Dropping and Empty Collection Creating")
-        print("(2) Data Crawling")
-        print("(3) Course Search")
-        print("(4) Waiting List Size Prediction")
-        print("(5) Waiting List Size Training")
-        print("\n(0) Quit")
-        choice = input(" >>  ")
-        exec_menu(choice)
 
-        # Closing a DB connection
-        print("Closing a DB connection...")
-        client.close()
-
-        return
-
-    except pymongo.errors.ConnectionFailure as error:
-        print("DB Connection Failed! Error Message: \"{}\"".format(error))
- 
 # Execute menu
 def exec_menu(choice):
     os.system('clear')
@@ -167,21 +174,54 @@ def exec_menu_post():
     print("0. Quit")
     choice = input(" >>  ")
     exec_menu(choice)
- 
+
+
 # Menu 1
 def menu1():
-    menu_1.run()
+    # menu_1.run()
+    print("(1) Collection Dropping and Empty Collection Creating.\n")
+
+    # Drop existing collections.
+    db.student.drop()
+    db.courses.drop()
+    db.course.drop()
+
+    # We do not need to create new empty collections since MongoDB does not require us to.
+    print("Collection dropping and empty collection creating are successful") # 5.1 Requirement
 
     exec_menu_post()
     return
  
- 
+
+DEFAULT_URL = 'http://course.cse.ust.hk/comp4332/index.html'
+DEFAULT_URL_TRIAL = 'http://comp4332.com/trial/'
+DEFAULT_URL_REAL = 'http://comp4332.com/realistic/'
+
+
 # Menu 2
 def menu2():
-    menu_2.run()
+    print("(2) Data Crawling.\n")
+    choice = input("Enter a URL or a special keyword (e.g. default) >>  ")
+    ch = choice.lower()
 
+    if ch == 'default' or ch == '':
+        print("Crawling from DEFAULT_URL_TRIAL: ", DEFAULT_URL_TRIAL)
+        crawl(DEFAULT_URL_TRIAL)
+    else:
+        print("Crawling from URL: ", ch)
+        crawl(ch)
+
+    print("Data Crawling is successful and all data are inserted into the database")
     exec_menu_post()
     return
+
+
+def crawl(url):
+    print("Crawling...")
+    str_command = "scrapy crawl TrialPage -a domain='" + url + "'"
+    subprocess.run(str_command, shell=True)
+    return
+
 
 # Menu 3
 def menu3():
