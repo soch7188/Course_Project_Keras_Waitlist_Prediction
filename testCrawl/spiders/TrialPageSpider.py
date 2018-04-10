@@ -2,6 +2,8 @@
 #
 #  The program was written by Ziwon KIM, based on the code by Raymond WONG.
 #
+import datetime
+
 import scrapy
 from pymongo import MongoClient
 import pymongo
@@ -80,17 +82,15 @@ class TrialPageSpider(scrapy.Spider):
                 exclusion = course_attributes.xpath(".//tr[th = 'EXCLUSION']/td/text()").extract_first()
                 description = course_attributes.xpath(".//tr[th = 'DESCRIPTION']/td/text()").extract_first()
 
-
-
                 # Uncommon attributes
                 alternate_codes = course_attributes.xpath(".//tr[th = 'ALTERNATE CODE(S)']/td/text()").extract_first()
-                colist_with =course_attributes.xpath(".//tr[th = 'CO - LIST WITH']/td/text()").extract_first()
-                corequisite =course_attributes.xpath(".//tr[th = 'CO-REQUISITE']/td/text()").extract_first()
-                intendedLearningOutcomes =course_attributes.xpath(".//tr//table//text()").extract_first() # TODO: CHECK IF THIS WORKS PROPERLY on EVSM5280
-                prerequisite =course_attributes.xpath(".//tr[th = 'PRE-REQUISITE']/td/text()").extract_first()
-                previousCode =course_attributes.xpath(".//tr[th = 'PREVIOUS CODE']/td/text()").extract_first()
-                vector =course_attributes.xpath(".//tr[th = 'VECTOR']/td/text()").extract_first()
-
+                colist_with = course_attributes.xpath(".//tr[th = 'CO - LIST WITH']/td/text()").extract_first()
+                corequisite = course_attributes.xpath(".//tr[th = 'CO-REQUISITE']/td/text()").extract_first()
+                intended_learning_outcomes_raw = course_attributes.xpath(".//tr//table//text()").extract()
+                intended_learning_outcomes = ''.join(intended_learning_outcomes_raw)
+                prerequisite = course_attributes.xpath(".//tr[th = 'PRE-REQUISITE']/td/text()").extract_first()
+                previous_code = course_attributes.xpath(".//tr[th = 'PREVIOUS CODE']/td/text()").extract_first()
+                vector = course_attributes.xpath(".//tr[th = 'VECTOR']/td/text()").extract_first()
 
                 # Upsert course info
                 db.course.update(
@@ -98,157 +98,145 @@ class TrialPageSpider(scrapy.Spider):
                         "code": course_code
                     },
                     {
-                        "code": course_code,
-                        "semester": semester,
-                        "title": title,
-                        "credits": credits,
-                        "attributes": attributes,
-                        "exclusion": exclusion,
-                        "description": description,
+                        "$set": {
+                            "code": course_code,
+                            "semester": semester,
+                            "title": title,
+                            "credits": credits,
+                            "attributes": attributes,
+                            "exclusion": exclusion,
+                            "description": description,
 
-                        "alternateCodes": alternate_codes,
-                        "colistWith": colist_with,
-                        "corequisite": corequisite,
-                        "intendedLearningOutcomes": intendedLearningOutcomes,
-                        "prerequisite": prerequisite,
-                        "previousCode": previousCode,
-                        "vector": vector,
+                            "alternateCodes": alternate_codes,
+                            "colistWith": colist_with,
+                            "corequisite": corequisite,
+                            "intendedLearningOutcomes": intended_learning_outcomes,
+                            "prerequisite": prerequisite,
+                            "previousCode": previous_code,
+                            "vector": vector,
+                        },
 
                     },
                     upsert=True,
                 )
 
+                record_time = course_page_title[-2] + "T" + course_page_title[-1] + " +0800"
+                list_of_sections = course.xpath("./table//tr")
+                is_first = True
+                curr_section_id = ""
 
-                # Add Sections to course info
-                db.collection.update(
-                    {
-                        "code": course_code,
-                        # "sections.recordTime": ,
-                    },
-                    {
-                        "$push": {
-                            "sections": {
-                                "recordTime": "",
-                                "sectionId": "",
-                                "offerings": [],
-                                "quota": "",
-                                "enrol": '',
-                                "wait": ''
-                            }
-                        }
-                    }
-                )
+                for section in list_of_sections:
+                    # Skip first "tr" - only have headings no meaningful data to store
+                    if is_first:
+                        is_first = False
+                        continue
 
-                # Sample Document Insert Script for Nested Sections Part
-                # "sections": [
-                #     {
-                #         "recordTime": new Date("2018-01-26 14:00"),
-                #     "sectionId": "L1",
-                #                  "offerings": [{
-                #     "dateAndTime": "Th 03:00PM - 04:50PM",
-                #     "room": "Rm 5620, Lift 31-32 (70)",
-                #     "instructors": ["LEUNG, Wai Ting"]
-                # }],
-                # "quota": 67,
-                # "enrol": 19,
-                # "wait": 0
-                # },
-                # {
-                #     "recordTime": new Date("2018-01-26 14:00"),
-                # "sectionId": "LA1",
-                # "offerings": [{
-                #     "dateAndTime": "Tu 03:00PM - 04:50PM",
-                #     "room": "Rm 4210, Lift 19 (67)",
-                #     "instructors": ["LEUNG, Wai Ting"]
-                # }],
-                # "quota": 67,
-                # "enrol": 19,
-                # "wait": 0
-                # },
-                # {
-                #     "recordTime": new Date("2018-02-01 11:30"),
-                # "sectionId": "L1",
-                # "offerings": [{
-                #     "dateAndTime": "Th 03:00PM - 04:50PM",
-                #     "room": "Rm 5620, Lift 31-32 (70)",
-                #     "instructors": ["LEUNG, Wai Ting"]
-                # }],
-                # "quota": 67,
-                # "enrol": 29,
-                # "wait": 0
-                # },
+                    section_tr_class = section.xpath("./@class").extract_first()
+
+                    if "newsect" in section_tr_class:
+                        section_id = section.xpath("./td[1]/text()").extract_first()
+                        curr_section_id = section_id
+                        offerings_date_and_time_raw = section.xpath("./td[2]/text()").extract()
+                        offerings_date_and_time = ' '.join(offerings_date_and_time_raw)
+                        offerings_room = section.xpath("./td[3]/text()").extract_first()
+                        offerings_instructors = section.xpath("./td[4]/text()").extract() # This is list
+                        quota = (section.xpath("./td[5]//text()").extract_first())
+                        enrol = (section.xpath("./td[6]//text()").extract_first())
+                        wait = (section.xpath("./td[8]//text()").extract_first())
+
+                        # Add Sections to course info
+                        db.course.update(
+                            {
+                                "code": course_code,
+                                # "sections.recordTime": datetime.datetime.strptime(record_time, "%Y-%m-%dT%H:%M"),
+                            },
+                            {
+                                "$push": {
+                                    "sections": {
+                                        "recordTime": datetime.datetime.strptime(record_time, "%Y-%m-%dT%H:%M %z"),
+                                        "sectionId": section_id,
+                                        "offerings": [{
+                                            "dateAndTime": offerings_date_and_time,
+                                            "room": offerings_room,
+                                            "instructors": offerings_instructors,
+                                        }],
+                                        "quota": quota,
+                                        "enrol": enrol,
+                                        "wait": wait
+                                    }
+                                }
+                            },
+                            # upsert=True,
+                        )
+
+                    # section is not newsect. Add new "offering" to previous section
+                    else:
+                        offerings_date_and_time_raw = section.xpath("./td[1]/text()").extract()
+                        offerings_date_and_time = ' '.join(offerings_date_and_time_raw)
+                        offerings_room = section.xpath("./td[2]/text()").extract_first()
+                        offerings_instructors = section.xpath("./td[3]/text()").extract()  # This is list
+
+                        db.course.update(
+                            {
+                                "code": course_code,
+                                "sections.recordTime": datetime.datetime.strptime(record_time, "%Y-%m-%dT%H:%M %z"),
+                                "sections.sectionId": curr_section_id
+                            },
+                            {
+                                "$push": {
+                                    "sections.$.offerings": {
+                                        "dateAndTime": offerings_date_and_time,
+                                        "room": offerings_room,
+                                        "instructors": offerings_instructors,
+                                    }
+                                }
+                            },
+                            # upsert=True,
+                        )
+
+
+
+                    # Sample Document Insert Script for Nested Sections Part
+                    # "sections": [
+                    #     {
+                    #         "recordTime": new Date("2018-01-26 14:00"),
+                    #     "sectionId": "L1",
+                    #     "offerings": [{
+                    #           "dateAndTime": "Th 03:00PM - 04:50PM",
+                    #           "room": "Rm 5620, Lift 31-32 (70)",
+                    #           "instructors": ["LEUNG, Wai Ting"]
+                    # }],
+                    # "quota": 67,
+                    # "enrol": 19,
+                    # "wait": 0
+                    # },
+                    # {
+                    #     "recordTime": new Date("2018-01-26 14:00"),
+                    # "sectionId": "LA1",
+                    # "offerings": [{
+                    #     "dateAndTime": "Tu 03:00PM - 04:50PM",
+                    #     "room": "Rm 4210, Lift 19 (67)",
+                    #     "instructors": ["LEUNG, Wai Ting"]
+                    # }],
+                    # "quota": 67,
+                    # "enrol": 19,
+                    # "wait": 0
+                    # },
+                    # {
+                    #     "recordTime": new Date("2018-02-01 11:30"),
+                    # "sectionId": "L1",
+                    # "offerings": [{
+                    #     "dateAndTime": "Th 03:00PM - 04:50PM",
+                    #     "room": "Rm 5620, Lift 31-32 (70)",
+                    #     "instructors": ["LEUNG, Wai Ting"]
+                    # }],
+                    # "quota": 67,
+                    # "enrol": 29,
+                    # "wait": 0
+                    # },
 
         else:
             list_of_departments = response.xpath("//a[@href]/@href").extract()
             for link in list_of_departments:
                 self.departments.append(link)
                 yield response.follow(link, callback=self.parse)
-
-
-        # elif len(self.departments) == 0:
-        #     list_of_departments = response.xpath("//a[@href]/@href").extract()
-        #     for link in list_of_departments:
-        #         self.departments.append(link)
-        #         yield response.follow(link, callback=self.parse)
-        #
-        # elif self.at_dept_page:
-        #     list_of_subjects_link = response.xpath("//a[@href]/@href").extract()
-        #
-        #     for link in list_of_subjects_link:
-        #         yield response.follow(link, callback=self.parse)
-
-#
-# class DeptPageSpider(scrapy.Spider):
-#     name = "DeptPage"
-#     start_urls = []
-#     departments = []
-#
-#     # Constructor (which is called at the beginning)
-#     def __init__(self, domain='', *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         print("DeptPageSpider domain: " + domain)
-#         self.start_urls.append(domain)  # Domain given by call parameter.
-#         print("This is called at the beginning.")
-#
-#     # Closed (which is called at the end)
-#     def closed(self, reason):
-#         print("This is called at the end.")
-#
-#     def parse(self, response):
-#         print("DeptPageSpider Parse called.")
-#
-#         list_of_departments = response.xpath("//a[@href]/@href").extract()
-#         for link in list_of_departments:
-#             self.departments.append(link)
-#             yield response.follow(link, callback=CoursePageSpider.parse)
-#
-#
-# class CoursePageSpider(scrapy.Spider):
-#     name = "CoursePage"
-#     start_urls = []
-#
-#     # Constructor (which is called at the beginning)
-#     def __init__(self, domain='', *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         print("CoursePage domain: " + domain)
-#         self.start_urls.append(domain)  # Domain given by call parameter.
-#         print("This is called at the beginning.")
-#
-#     # Closed (which is called at the end)
-#     def closed(self, reason):
-#         print("This is called at the end.")
-#
-#     def parse(self, response):
-#         print("CoursePageSpider Parse called.")
-#
-#         # Insert into DB.
-#         list_of_courses = response.xpath("//div[contains(@class, 'course')]").extract()
-#
-#         for course in list_of_courses:
-#             course_code = course.xpath("//div[contains(@class, 'courseanchor')]/a[@name]/@name")
-#             db.course.insert(
-#                 {
-#                     "code": course_code,
-#                     "semester": "test_semester",
-#                     "title": "test_title"
-#                 })

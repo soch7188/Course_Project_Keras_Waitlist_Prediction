@@ -10,7 +10,7 @@ db.course.insert(
         "description": "This course is an introduction to computers and computing tools. It introduces the organization and basic working mechanism of a computer system, including the development of the trend of modern computer system. It covers the fundamentals of computer hardware design and software application development. The course emphasizes the application of the state-of-the-art software tools to solve problems and present solutions via a range of skills related to multimedia and internet computing tools such as internet, e-mail, WWW, webpage design, computer animation, spread sheet charts/figures, presentations with graphics and animations, etc. The course also covers business, accessibility, and relevant security issues in the use of computers and Internet.",
         "sections": [
             {
-                "recordTime": new Date("2018-01-26 14:00"),
+                "recordTime": new Date("2018-01-26T14:00Z"),
                 "sectionId": "L1",
                 "offerings": [{
                     "dateAndTime": "Th 03:00PM - 04:50PM",
