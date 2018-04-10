@@ -39,6 +39,7 @@ class TrialPageSpider(scrapy.Spider):
     # Closed (which is called at the end)
     def closed(self, reason):
         print("This is called at the end.")
+        client.close()
 
     def parse(self, response):
         # print("TrialPageSpider Parse called.")
@@ -142,7 +143,10 @@ class TrialPageSpider(scrapy.Spider):
                         offerings_instructors = section.xpath("./td[4]/text()").extract() # This is list
                         quota = (section.xpath("./td[5]//text()").extract_first())
                         enrol = (section.xpath("./td[6]//text()").extract_first())
+                        avail = (section.xpath("./td[7]//text()").extract_first())
                         wait = (section.xpath("./td[8]//text()").extract_first())
+                        remarks_raw = section.xpath("./td[9]//text()").extract()
+                        remarks = ' '.join(remarks_raw)
 
                         # Add Sections to course info
                         db.course.update(
@@ -162,7 +166,9 @@ class TrialPageSpider(scrapy.Spider):
                                         }],
                                         "quota": quota,
                                         "enrol": enrol,
-                                        "wait": wait
+                                        "avail": avail,
+                                        "wait": wait,
+                                        "remarks": remarks
                                     }
                                 }
                             },
@@ -193,47 +199,6 @@ class TrialPageSpider(scrapy.Spider):
                             },
                             # upsert=True,
                         )
-
-
-
-                    # Sample Document Insert Script for Nested Sections Part
-                    # "sections": [
-                    #     {
-                    #         "recordTime": new Date("2018-01-26 14:00"),
-                    #     "sectionId": "L1",
-                    #     "offerings": [{
-                    #           "dateAndTime": "Th 03:00PM - 04:50PM",
-                    #           "room": "Rm 5620, Lift 31-32 (70)",
-                    #           "instructors": ["LEUNG, Wai Ting"]
-                    # }],
-                    # "quota": 67,
-                    # "enrol": 19,
-                    # "wait": 0
-                    # },
-                    # {
-                    #     "recordTime": new Date("2018-01-26 14:00"),
-                    # "sectionId": "LA1",
-                    # "offerings": [{
-                    #     "dateAndTime": "Tu 03:00PM - 04:50PM",
-                    #     "room": "Rm 4210, Lift 19 (67)",
-                    #     "instructors": ["LEUNG, Wai Ting"]
-                    # }],
-                    # "quota": 67,
-                    # "enrol": 19,
-                    # "wait": 0
-                    # },
-                    # {
-                    #     "recordTime": new Date("2018-02-01 11:30"),
-                    # "sectionId": "L1",
-                    # "offerings": [{
-                    #     "dateAndTime": "Th 03:00PM - 04:50PM",
-                    #     "room": "Rm 5620, Lift 31-32 (70)",
-                    #     "instructors": ["LEUNG, Wai Ting"]
-                    # }],
-                    # "quota": 67,
-                    # "enrol": 29,
-                    # "wait": 0
-                    # },
 
         else:
             list_of_departments = response.xpath("//a[@href]/@href").extract()
