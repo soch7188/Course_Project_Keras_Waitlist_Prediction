@@ -75,20 +75,20 @@ result = db.course.aggregate([
             $lt: end_ts
         }}},
         // The filter that keeps the records that fulfill the condition that (waitlist size >= enrolment * f)
-        // { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
+        // { $match: {$expr: {$gte: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
         { $project : {                              // Discard _id and keep the following fields if denoted as 1
             _id: 0,
             cid: 1,
             cname: 1,
             credit: 1,
             // The conditional statement to generate the value "Satisfied" for each section (not included in phase 2)
-            // "sectionList.Satisfied": {
-            //     $cond: {
-            //         if: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]},
-            //         then: "Yes",
-            //         else: "No"
-            //     }
-            // },
+            "sectionList.Satisfied": {
+                $cond: {
+                    if: {$gte: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]},
+                    then: "Yes",
+                    else: "No"
+                }
+            },
             "sectionList.section": 1,
             "sectionList.dateTime": 1,
             "sectionList.quota": 1,

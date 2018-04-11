@@ -194,7 +194,7 @@ db.course.insert(
             quota: 67,
             enrol: 4,
             avail: 63,
-            wait: 0,
+            wait: 9,
             remarks: "",
             timeSlot: new Date("2018-01-25T09:00:00")
         },
@@ -213,7 +213,7 @@ db.course.insert(
             quota: 67,
             enrol: 4,
             avail: 63,
-            wait: 0,
+            wait: 8,
             remarks: "",
             timeSlot: new Date("2018-01-27T19:00:00") //YYYY-mm-ddTHH:MM:ss
         },
@@ -232,7 +232,7 @@ db.course.insert(
             quota: 67,
             enrol: 4,
             avail: 63,
-            wait: 0,
+            wait: 9,
             remarks: "",
             timeSlot: new Date("2018-01-27T19:00:00") //YYYY-mm-ddTHH:MM:ss
         },
@@ -252,7 +252,7 @@ db.course.insert(
             quota: 67,
             enrol: 4,
             avail: 63,
-            wait: 0,
+            wait: 6,
             remarks: "",
             timeSlot: new Date("2018-01-27T19:00:00")
         }

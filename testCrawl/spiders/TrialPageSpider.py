@@ -164,10 +164,10 @@ class TrialPageSpider(scrapy.Spider):
                                             "room": offerings_room,
                                             "instructors": offerings_instructors,
                                         }],
-                                        "quota": quota,
-                                        "enrol": enrol,
-                                        "avail": avail,
-                                        "wait": wait,
+                                        "quota": int(quota),
+                                        "enrol": int(enrol),
+                                        "avail": int(avail),
+                                        "wait": int(wait),
                                         "remarks": remarks
                                     }
                                 }

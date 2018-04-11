@@ -31,7 +31,8 @@ result = db.course.aggregate([
             $gte: start_ts,
             $lt: end_ts
         }}},
-        // { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
+        // The filter that keeps the records that fulfill the condition that (waitlist size >= enrolment * f) // TODO: IMPLEMENT
+        { $match: {$expr: {$gt: ["$sectionList.wait", {$multiply: ["$sectionList.enrol", num_f]}]}}},
         { $project : {
             _id: 0,
             cid: 1,
