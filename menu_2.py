@@ -2,6 +2,7 @@ import os
 
 DEFAULT_URL = 'http://course.cse.ust.hk/comp4332/index.html'
 
+
 def run():
     # Welcome message
     print("(2) Data Crawling\n")
@@ -16,9 +17,11 @@ def run():
 
     return
 
+
 def crawl(url):
     print("Crawling...")
     return
+
 
 # Execute menu
 def exec_menu(choice):

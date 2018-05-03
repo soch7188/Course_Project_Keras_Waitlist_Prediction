@@ -121,7 +121,7 @@ try:
 
     # Getting a Database named "university"
     print("Getting a database named \"university\"")
-    db = client["hkust"]
+    db = client["university"]
 
     # print(db.getCollectionNames())
 
@@ -182,7 +182,9 @@ def menu1():
     print("(1) Collection Dropping and Empty Collection Creating.\n")
 
     # Drop existing collections.
-    # db.courses.drop() # TODO: Commented to avoid deleting DB accidentally. Uncomment before final submission.
+    db.student.drop()
+    db.courses.drop()
+    db.course.drop()
 
     # We do not need to create new empty collections since MongoDB does not require us to.
     print("Collection dropping and empty collection creating are successful") # 5.1 Requirement
@@ -221,8 +223,7 @@ def menu2():
 
 def crawl(url):
     print("Crawling...")
-    str_command = "scrapy crawl mongo -a domain='" + url + "'"          # Sample spider for crawling
-    # str_command = "scrapy crawl TrialPage -a domain='" + url + "'"    # Self-implemented spider for crawling
+    str_command = "scrapy crawl TrialPage -a domain='" + url + "'"
     subprocess.run(str_command, shell=True)
     return
 

@@ -14,8 +14,8 @@ try:
     client = MongoClient("mongodb://localhost:27017")
 
     # Getting a Database named "university"
-    print("Getting a database named \"hkust\"")
-    db = client["hkust"]
+    print("Getting a database named \"university\"")
+    db = client["university"]
 
     # print(db.getCollectionNames())
 
@@ -93,8 +93,8 @@ class TrialPageSpider(scrapy.Spider):
                 previous_code = course_attributes.xpath(".//tr[th = 'PREVIOUS CODE']/td/text()").extract_first()
                 vector = course_attributes.xpath(".//tr[th = 'VECTOR']/td/text()").extract_first()
 
-                # Upsert courses info
-                db.courses.update(
+                # Upsert course info
+                db.course.update(
                     {
                         "code": course_code
                     },
@@ -148,8 +148,8 @@ class TrialPageSpider(scrapy.Spider):
                         remarks_raw = section.xpath("./td[9]//text()").extract()
                         remarks = ' '.join(remarks_raw)
 
-                        # Add Sections to courses info
-                        db.courses.update(
+                        # Add Sections to course info
+                        db.course.update(
                             {
                                 "code": course_code,
                                 # "sections.recordTime": datetime.datetime.strptime(record_time, "%Y-%m-%dT%H:%M"),
@@ -182,7 +182,7 @@ class TrialPageSpider(scrapy.Spider):
                         offerings_room = section.xpath("./td[2]/text()").extract_first()
                         offerings_instructors = section.xpath("./td[3]/text()").extract()  # This is list
 
-                        db.courses.update(
+                        db.course.update(
                             {
                                 "code": course_code,
                                 "sections.recordTime": datetime.datetime.strptime(record_time, "%Y-%m-%dT%H:%M %z"),

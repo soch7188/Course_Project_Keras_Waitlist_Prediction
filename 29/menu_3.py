@@ -12,8 +12,8 @@ try:
     client = MongoClient("mongodb://localhost:27017")
 
     # Getting a Database named "university"
-    print("Getting a database named \"hkust\"")
-    db = client["hkust"]
+    print("Getting a database named \"university\"")
+    db = client["university"]
 
     # print(db.getCollectionNames())
 
@@ -41,10 +41,8 @@ def searchByKeyword():
     keyword = input("Please enter the keyword >>  ")
     print("Course Search by Keyword: %s" % keyword)
 
-
-    # Uncomment the two lines below when data is first crawled and this function is called for the first time.
-    # db.courses.drop_indexes()
-    # db.courses.create_index([("code", pymongo.TEXT), ("title", pymongo.TEXT), ("description", pymongo.TEXT), ("sections.remarks", pymongo.TEXT)])
+    db.course.drop_indexes()
+    db.course.create_index([("title", pymongo.TEXT), ("description", pymongo.TEXT), ("sections.remarks", pymongo.TEXT)])
 
     pipeline = [
         {"$match": {"$text": {"$search": keyword}}},
@@ -72,7 +70,7 @@ def searchByKeyword():
         {"$project": {"_id": 0, "Course Code": "$code", "Course Title": "$title", "Number of Units/Credits": "$credits", "Sections": "$sections"}}
     ]
 
-    indexAggregateSortedResult = list(db.courses.aggregate(pipeline=pipeline))
+    indexAggregateSortedResult = list(db.course.aggregate(pipeline=pipeline))
 
     pp = pprint.PrettyPrinter(indent=0)
     pp.pprint(indexAggregateSortedResult)
@@ -155,7 +153,7 @@ def searchByWaitingListSize():
     ]
 
 
-    sizeAggregateSortedResult = list(db.courses.aggregate(pipeline=pipeline))
+    sizeAggregateSortedResult = list(db.course.aggregate(pipeline=pipeline))
 
     pp = pprint.PrettyPrinter(indent=0)
     pp.pprint(sizeAggregateSortedResult)
