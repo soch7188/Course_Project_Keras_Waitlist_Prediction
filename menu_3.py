@@ -112,14 +112,16 @@ def searchByKeyword():
 def searchByWaitingListSize():
     print("(3)[2] Course Search by Waiting List Size")
     num_f = input("Please enter the f value >>  ")
-    num_f = int(num_f)
+    num_f = float(num_f)
     # Required timestamp format: 2018-01-28 10:00
     start_ts_input = input("Please enter the starting timestamp >>  ")
     end_ts_input = input("Please enter the ending timestamp >>  ")
     start_ts_input = start_ts_input.split(' ')
     end_ts_input = end_ts_input.split(' ')
-    start_ts = datetime.datetime.strptime(start_ts_input[0] + 'T' + start_ts_input[1] + ' +0800', "%Y-%m-%dT%H:%M %z")
-    end_ts = datetime.datetime.strptime(end_ts_input[0] + 'T' + end_ts_input[1] + ' +0800', "%Y-%m-%dT%H:%M %z")
+    # start_ts = datetime.datetime.strptime(start_ts_input[0] + 'T' + start_ts_input[1] + ' +0800', "%Y-%m-%dT%H:%M %z")
+    start_ts = datetime.datetime.strptime(start_ts_input[0] + 'T' + start_ts_input[1] + '', "%Y-%m-%dT%H:%M")
+    # end_ts = datetime.datetime.strptime(end_ts_input[0] + 'T' + end_ts_input[1] + ' +0800', "%Y-%m-%dT%H:%M %z")
+    end_ts = datetime.datetime.strptime(end_ts_input[0] + 'T' + end_ts_input[1] + '', "%Y-%m-%dT%H:%M")
 
     print("Course Search by num_f: %s" % num_f)
 
@@ -128,7 +130,7 @@ def searchByWaitingListSize():
         {"$unwind": '$sections'},
         {"$match": {"sections.recordTime": {
             "$gte": start_ts,
-            "$lt": end_ts
+            "$lte": end_ts
         }}},
         {"$project": {
             "_id": 0,
@@ -151,25 +153,29 @@ def searchByWaitingListSize():
             "sections.avail": 1,
             "sections.wait": 1,
             "sections.recordTime": 1,
+            # "sections.recordTime": datetime.datetime.strftime("$sections.recordTime", ),
             }
         },
         {"$match": {"sections.Satisfied": True}},
-
-        {"$sort": {"code": 1, "sections.sectionId": 1}},
         {"$group": {"_id": "$code",
                     "code": {"$last": "$code"},
                     "sections": {"$push": "$sections"},
-                    "lastRecordTime": {"$last": "$sections.recordTime"},
+                    "lastRecordTime": {"$max": "$sections.recordTime"},
                     "title": {"$last": "$title"},
                     "credits": {"$last": "$credits"},
                     }},
+        {"$sort": {"code": 1, "sections.sectionId": 1}},
 
         {"$unwind": "$sections"},
         {"$project": {"code": 1, "credits": 1, "title": 1, "sections": 1,
                       "lastRecordTime": 1,
-                      "isLastRecordTime": {"$eq": ["$sections.recordTime", "$lastRecordTime"]}}},
+                      "isLastRecordTime": {"$eq": ["$sections.recordTime", "$lastRecordTime"]},
+                      # Uncomment when you want to prune cases where 'enrol' = 0 and 'wait' = 0.
+                      # "sections.enrolnotzero": {"ne": ["$sections.enrol", 0]},
+                      "enrolwaitnotzero": {"$and": [{"$ne": ["$sections.wait", 0]}, {"$ne": ["$sections.enrol", 0]}]}
+                      }},
 
-        {"$match": {"isLastRecordTime": True}},
+        {"$match": {"isLastRecordTime": True, "enrolwaitnotzero": True}},
 
         {"$group": {"_id": "$_id",
                     "code": {"$last": "$code"},
