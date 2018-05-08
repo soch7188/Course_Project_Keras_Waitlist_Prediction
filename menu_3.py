@@ -1,6 +1,6 @@
 import datetime
 import os
-from pymongo import MongoClient
+from pymongo import MongoClient, collation
 import pymongo
 from bson.son import SON
 import pprint
@@ -39,15 +39,20 @@ def searchByKeyword():
 
     print("(3)[1] Course Search by Keyword")
     keyword = input("Please enter the keyword >>  ")
+    keyword = keyword.replace(",", "")
+    keyword = keyword.replace(";", "")
+    keyword = keyword.replace(".", "")
+    keyword = keyword.replace(":", "")
+    keyword = keyword.replace("-", " ")
     print("Course Search by Keyword: %s" % keyword)
 
 
     # Uncomment the two lines below when data is first crawled and this function is called for the first time.
     # db.courses.drop_indexes()
-    # db.courses.create_index([("code", pymongo.TEXT), ("title", pymongo.TEXT), ("description", pymongo.TEXT), ("sections.remarks", pymongo.TEXT)])
+    # db.courses.create_index([("code", pymongo.TEXT), ("title", pymongo.TEXT), ("description", pymongo.TEXT)])
 
     pipeline = [
-        {"$match": {"$text": {"$search": keyword}}},
+        {"$match": {"$text": {"$search": keyword, "$caseSensitive": True}}},
         {"$sort": {"code": 1, "sections.recordTime": 1}},
         {"$unwind": "$sections"},
         {"$sort": {"sections.recordTime": 1}},
@@ -59,7 +64,20 @@ def searchByKeyword():
                     "credits": {"$last": "$credits"},
                     }},
         {"$unwind": "$sections"},
-        {"$project": {"code": "$code", "credits": "$credits", "title": "$title", "sections": "$sections", "lastRecordTime": "$lastRecordTime", "isLastRecordTime": {"$eq": ["$sections.recordTime", "$lastRecordTime"]}}},
+        {"$project": {"code": "$code", "credits": "$credits", "title": "$title",
+                      "sections.SectionId": "$sections.sectionId",
+                      "sections.Enrol": "$sections.enrol",
+                      "sections.Quota": "$sections.quota",
+                      "sections.Wait": "$sections.wait",
+                      "sections.Avail": {"$subtract": ["$sections.quota", "$sections.enrol"]},
+                      "sections.Date&Time": "$sections.offerings.dateAndTime",
+                      "lastRecordTime": "$lastRecordTime",
+                      "isLastRecordTime": {"$eq": ["$sections.recordTime", "$lastRecordTime"]}}},
+        # {"$project": {"code": "$code", "credits": "$credits", "title": "$title",
+        #               "sections": "$sections", "lastRecordTime": "$lastRecordTime",
+        #               "isLastRecordTime": {"$eq": ["$sections.recordTime", "$lastRecordTime"]}}},
+        # {"$group": {"_id": "$_id",
+        #             "sections.avail": {"$subtract": ["$sections.quota", "$sections.avail"]}}},
         {"$match": {"isLastRecordTime": True}},
         {"$group": {"_id": "$_id",
                     "code": {"$last": "$code"},
@@ -68,11 +86,20 @@ def searchByKeyword():
                     "credits": {"$last": "$credits"},
                     }},
         {"$sort": {"code": 1, "sections.sectionId": 1}},
-        {"$project": {"_id": 0, "code": 1, "title": 1, "credits": 1, "sections": 1}},
-        {"$project": {"_id": 0, "Course Code": "$code", "Course Title": "$title", "Number of Units/Credits": "$credits", "Sections": "$sections"}}
+        {"$project": {"_id": 0, "code": 1, "title": 1, "credits": 1,
+                      "sections.SectionId": 1,"sections.Enrol": 1, "sections.Quota": 1,
+                      "sections.Wait": 1, "sections.Avail": 1,
+                      "sections.Date&Time": 1,
+                      # "sections.offerings[0].dateAndTime": 1
+                      }
+         },
+        {"$project": {"_id": 0, "Course Code": "$code", "Course Title": "$title",
+                      "Number of Units/Credits": "$credits", "Sections": "$sections"}}
     ]
 
-    indexAggregateSortedResult = list(db.courses.aggregate(pipeline=pipeline))
+    indexAggregateSortedResult = list(
+        db.courses.aggregate(pipeline=pipeline, allowDiskUse=True)
+    )
 
     pp = pprint.PrettyPrinter(indent=0)
     pp.pprint(indexAggregateSortedResult)
@@ -97,6 +124,7 @@ def searchByWaitingListSize():
     print("Course Search by num_f: %s" % num_f)
 
     pipeline = [
+        {"$match": {"sections.sectionId": {"$in": ["L1"]}}},
         {"$unwind": '$sections'},
         {"$match": {"sections.recordTime": {
             "$gte": start_ts,
@@ -116,7 +144,8 @@ def searchByWaitingListSize():
                 }
             },
             "sections.sectionId": 1,
-            "sections.offerings": 1,
+            # "sections.offerings": 1,
+            "sections.Date&Time": "$sections.offerings.dateAndTime",
             "sections.quota": 1,
             "sections.enrol": 1,
             "sections.avail": 1,
