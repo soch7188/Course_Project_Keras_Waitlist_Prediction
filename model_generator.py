@@ -162,8 +162,6 @@ def run(_courseCode, _lectureNumber):
     def train1(X,Y,_dim):
         X = np.asarray(X)
         Y = np.asarray(Y)
-        
-        # print(X[0])
 
         model1 = Sequential()
         model1.add(Dense(16, input_dim=_dim, activation='relu'))
@@ -182,11 +180,9 @@ def run(_courseCode, _lectureNumber):
     def train2(X,Y,_dim):
         X = np.asarray(X)
         Y = np.asarray(Y)
-        
-        # print(X[0])
 
         model2 = Sequential()
-        model2.add(Dense(32, input_dim=_dim, activation='relu'))
+        model2.add(Dense(16, input_dim=_dim, activation='relu'))
         model2.add(Dense(16, activation='relu'))
         model2.add(Dense(1, activation='relu'))
 
@@ -202,11 +198,9 @@ def run(_courseCode, _lectureNumber):
     def train3(X,Y,_dim):
         X = np.asarray(X)
         Y = np.asarray(Y)
-        
-        # print(X[0])
 
         model = Sequential()
-        model.add(Dense(3, input_dim=_dim, activation='relu'))
+        model.add(Dense(4, input_dim=_dim, activation='relu'))
         model.add(Dense(8, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
@@ -254,7 +248,6 @@ def run(_courseCode, _lectureNumber):
         model = Sequential()
         # model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
         model.add(LSTM(1, input_shape=(timestep,dim)))
-        model.add(Dropout(0.1))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
