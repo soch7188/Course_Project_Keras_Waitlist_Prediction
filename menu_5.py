@@ -226,8 +226,8 @@ def run():
 
         model = Sequential()
         model.add(Dense(16, input_dim=_dim, activation='sigmoid')) 
-        model.add(Dense(8, input_dim=_dim, activation='sigmoid')) 
-        model.add(Dense(4, input_dim=_dim, activation='relu')) 
+        model.add(Dense(8, activation='sigmoid')) 
+        model.add(Dense(4, activation='relu')) 
         model.add(Dense(1, activation='sigmoid'))
 
         model.compile(loss="binary_crossentropy", optimizer="rmsprop", metrics=["mae"])
@@ -247,7 +247,7 @@ def run():
 
         model = Sequential()
         model.add(Dense(8, input_dim=_dim, activation='relu')) 
-        model.add(Dense(4, input_dim=_dim, activation='sigmoid'))
+        model.add(Dense(4, activation='sigmoid'))
         model.add(Dense(1, activation='relu'))
 
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
