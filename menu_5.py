@@ -216,10 +216,6 @@ def run():
         print("{}: {}".format(model.metrics_names[1], scores[1]*100))
 
         return model
-    
-    model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model1, "model1")
-
 
     # Model 2
     def train2(X,Y,_dim):
@@ -241,10 +237,6 @@ def run():
         print("{}: {}".format(model.metrics_names[1], scores[1]*100))
 
         return model
-    
-    model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model2, "model2")
-
 
     # Model 3
     def train3(X,Y,_dim):
@@ -265,11 +257,6 @@ def run():
         print("{}: {}".format(model.metrics_names[1], scores[1]*100))
 
         return model
-    
-    model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model3, "model3")
-
-
 
     # Model 4
     def train4(X,Y, timestep=1, dim=1):
@@ -290,10 +277,6 @@ def run():
         
         return model
 
-    model4 = train4(dataX,dataY,3,2)
-    saveModel(model4, "model4")
-
-
     # Model 4
     def train5(X,Y, timestep=1, dim=1):
         # Reshape to fit the LSTM model
@@ -312,8 +295,24 @@ def run():
         
         return model
 
+    
+
+
+    # Training
+    model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model1, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
+
+    model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model2, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
+
+    model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model3, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
+
+    model4 = train4(dataX,dataY,3,2)
+    saveModel(model4, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
+
     model5 = train5(dataX,dataY,3,2)
-    saveModel(model5, "model5")
+    saveModel(model5, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
 
 
     # Main execution
