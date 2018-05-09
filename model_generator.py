@@ -253,9 +253,10 @@ def run(_courseCode, _lectureNumber):
         # Model
         model = Sequential()
         # model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
-        model.add(LSTM(4, input_shape=(timestep,dim)))
+        model.add(LSTM(1, input_shape=(timestep,dim)))
+        model.add(Dropout(0.1))
         model.add(Dense(1, activation='relu'))
-        model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         # Ealuation
