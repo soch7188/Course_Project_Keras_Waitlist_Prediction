@@ -220,8 +220,8 @@ def run():
 
         return model
     
-    # model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
-    # saveModel(model1, "model1")
+    model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model1, "model1")
 
 
     # Model 2
@@ -233,6 +233,8 @@ def run():
 
         model = Sequential()
         model.add(Dense(16, input_dim=_dim, activation='sigmoid')) 
+        model.add(Dense(8, input_dim=_dim, activation='sigmoid')) 
+        model.add(Dense(4, input_dim=_dim, activation='relu')) 
         model.add(Dense(1, activation='sigmoid'))
 
         model.compile(loss="binary_crossentropy", optimizer="rmsprop", metrics=["mae"])
@@ -243,8 +245,8 @@ def run():
 
         return model
     
-    # model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
-    # saveModel(model2, "model2")
+    model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model2, "model2")
 
 
     # Model 3
@@ -267,8 +269,8 @@ def run():
 
         return model
     
-    # model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
-    # saveModel(model3, "model3")
+    model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
+    saveModel(model3, "model3")
 
 
 
@@ -291,8 +293,8 @@ def run():
         
         return model
 
-    # model4 = train4(dataX,dataY,3,2)
-    # saveModel(model4, "model4")
+    model4 = train4(dataX,dataY,3,2)
+    saveModel(model4, "model4")
 
 
     # Model 4
@@ -313,8 +315,8 @@ def run():
         
         return model
 
-    # model5 = train5(dataX,dataY,3,2)
-    # saveModel(model5, "model5")
+    model5 = train5(dataX,dataY,3,2)
+    saveModel(model5, "model5")
 
 
 
@@ -329,21 +331,23 @@ def run():
     final_model_5 = readModel("model5")
 
     # Prepare data for prediction
-    time_slot = TIME_SLOT.split(" ")
-    time_slot = [int(x) for x in time_slot]
+    # time_slot = TIME_SLOT.split(" ")
+    # time_slot = [int(x) for x in time_slot]
+    # 2018-01-28 10:00
+    time_slot = datetime.datetime.strptime(TIME_SLOT, '%Y-%m-%d %H:%M')
     print("Timeslot:", time_slot)
-    predictableData = getPredictableData(datetime.datetime(time_slot[0], time_slot[1], time_slot[2], time_slot[3], time_slot[4]))
+    predictableData = getPredictableData(time_slot)
 
     print(predictableData.shape)
 
     print("\n")
     print("===================================")
 
-    print("Model 1:", final_model_1.predict(predictableData.reshape(1,6))[0][0])
-    print("Model 2:", final_model_2.predict(predictableData.reshape(1,6))[0][0])
-    print("Model 3:", final_model_3.predict(predictableData.reshape(1,6))[0][0])
-    print("Model 4:", final_model_4.predict(predictableData)[0][0])
-    print("Model 5:", final_model_5.predict(predictableData)[0][0])
+    print("Model 1:", final_model_1.predict(predictableData.reshape(1,6))[0])
+    print("Model 2:", final_model_2.predict(predictableData.reshape(1,6))[0])
+    print("Model 3:", final_model_3.predict(predictableData.reshape(1,6))[0])
+    print("Model 4:", final_model_4.predict(predictableData)[0])
+    print("Model 5:", final_model_5.predict(predictableData)[0])
 
     print("===================================")
     print("\n")
