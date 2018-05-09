@@ -165,11 +165,12 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
-        model.add(Dense(8, input_dim=_dim, activation='relu')) 
+        model.add(Dense(8, input_dim=_dim, activation='relu'))
+        model.add(Dense(8, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=8, validation_split=0.2)
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
@@ -184,13 +185,13 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
-        model.add(Dense(16, input_dim=_dim, activation='sigmoid')) 
-        model.add(Dense(8, input_dim=_dim, activation='sigmoid')) 
-        model.add(Dense(4, input_dim=_dim, activation='relu')) 
-        model.add(Dense(1, activation='sigmoid'))
+        model.add(Dense(16, input_dim=_dim, activation='relu'))
+        model.add(Dense(8, activation='relu'))
+        model.add(Dense(4, activation='relu'))
+        model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="binary_crossentropy", optimizer="rmsprop", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=8, validation_split=0.2)
+        model.compile(loss="mean_squared_error", optimizer="rmsprop", metrics=["mae"])
+        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
@@ -206,11 +207,11 @@ def run(_courseCode, _lectureNumber):
 
         model = Sequential()
         model.add(Dense(8, input_dim=_dim, activation='relu')) 
-        model.add(Dense(4, input_dim=_dim, activation='sigmoid'))
+        model.add(Dense(4, activation='sigmoid'))
         model.add(Dense(1, activation='relu'))
 
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=8, validation_split=0.2)
+        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
@@ -228,7 +229,7 @@ def run(_courseCode, _lectureNumber):
         model.add(Dropout(0.2))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=8, validation_split=0.2)
+        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         # Ealuation
         scores = model.evaluate(X, Y)
@@ -246,7 +247,7 @@ def run(_courseCode, _lectureNumber):
         model.add(LSTM(8, input_shape=(timestep,dim)))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=8, validation_split=0.2)
+        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         # Ealuation
         scores = model.evaluate(X, Y)
@@ -258,18 +259,23 @@ def run(_courseCode, _lectureNumber):
 
 
     # Training
-    model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
+    print("Model 1 Training Start")
+    model1 = train1(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
     saveModel(model1, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
 
-    model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
+    print("Model 2 Training Start")
+    model2 = train2(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
     saveModel(model2, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
 
-    model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
+    print("Model 3 Training Start")
+    model3 = train3(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
     saveModel(model3, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
 
+    print("Model 4 Training Start")
     model4 = train4(dataX,dataY,3,2)
     saveModel(model4, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
 
+    print("Model 5 Training Start")
     model5 = train5(dataX,dataY,3,2)
     saveModel(model5, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
 
