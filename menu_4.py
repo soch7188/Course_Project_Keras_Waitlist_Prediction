@@ -154,6 +154,24 @@ def run():
         if (index != -1):
             res = np.asarray(fullHeadTailDataListEQW[index-1:index+1])
             print("Predictable Data:", res)
+            # return np.swapaxes(res,0,1).reshape(1,3,2)
+            return res
+        else:
+            return np.zeros(1)
+
+    def getPredictableDataForLSTM(_datetime):
+        index = -1
+        # Capture datetime
+        for ind, row in enumerate(fullHeadTailDataList):
+            if (row['datetime'] == _datetime):
+                index = ind
+
+        print("Index of Predictable Data:", index)
+
+        # Found corresponding datetime
+        if (index != -1):
+            res = np.asarray(fullHeadTailDataListEQW[index - 1:index + 1])
+            print("Predictable Data:", res)
             return np.swapaxes(res,0,1).reshape(1,3,2)
         else:
             return np.zeros(1)
@@ -188,8 +206,11 @@ def run():
     time_slot = datetime.datetime.strptime(TIME_SLOT, '%Y-%m-%d %H:%M')
     print("Timeslot:", time_slot)
     predictableData = getPredictableData(time_slot)
+    predictableDataLSTM = getPredictableDataForLSTM(time_slot)
 
+    print(predictableData)
     print(predictableData.shape)
+    print(predictableData.reshape(1,6))
 
     print("\n")
     print("===================================")
@@ -197,8 +218,8 @@ def run():
     print("Model 1:", final_model_1.predict(predictableData.reshape(1,6))[0])
     print("Model 2:", final_model_2.predict(predictableData.reshape(1,6))[0])
     print("Model 3:", final_model_3.predict(predictableData.reshape(1,6))[0])
-    print("Model 4:", final_model_4.predict(predictableData)[0])
-    print("Model 5:", final_model_5.predict(predictableData)[0])
+    print("Model 4:", final_model_4.predict(predictableDataLSTM)[0])
+    print("Model 5:", final_model_5.predict(predictableDataLSTM)[0])
 
     print("===================================")
     print("\n")

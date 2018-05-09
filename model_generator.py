@@ -165,19 +165,18 @@ def run(_courseCode, _lectureNumber):
         
         # print(X[0])
 
-        model = Sequential()
-        model.weights.clear()
-        model.add(Dense(8, input_dim=_dim, activation='relu'))
-        model.add(Dense(4, activation='relu'))
-        model.add(Dense(1, activation='relu'))
+        model1 = Sequential()
+        model1.add(Dense(16, input_dim=_dim, activation='relu'))
+        model1.add(Dense(8, activation='relu'))
+        model1.add(Dense(1, activation='relu'))
 
-        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=50, batch_size=4, validation_split=0.2)
+        model1.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        model1.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
-        scores = model.evaluate(X, Y)
+        scores = model1.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
 
-        return model
+        return model1
 
     # Model 2
     def train2(X,Y,_dim):
@@ -186,19 +185,20 @@ def run(_courseCode, _lectureNumber):
         
         # print(X[0])
 
-        model = Sequential()
-        model.weights.clear()
-        model.add(Dense(16, input_dim=_dim, activation='relu'))
-        model.add(Dense(8, activation='relu'))
-        model.add(Dense(1, activation='relu'))
+        model2 = Sequential()
+        model2.weights.clear()
+        model2.add(Dense(16, input_dim=_dim, activation='relu'))
+        model2.add(Dense(8, activation='relu'))
+        model2.add(Dense(8, activation='relu'))
+        model2.add(Dense(1, activation='relu'))
 
-        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
+        model2.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        model2.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
-        scores = model.evaluate(X, Y)
+        scores = model2.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
 
-        return model
+        return model2
 
     # Model 3
     def train3(X,Y,_dim):
@@ -208,12 +208,11 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
-        model.weights.clear()
         model.add(Dense(16, input_dim=_dim, activation='relu'))
         model.add(Dense(8, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["accuracy"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
@@ -228,7 +227,6 @@ def run(_courseCode, _lectureNumber):
             
         # Model
         model = Sequential()
-        model.weights.clear()
         model.add(LSTM(4, input_shape=(timestep,dim)))
         model.add(Dropout(0.2))
         model.add(Dense(1, activation='relu'))
@@ -256,8 +254,8 @@ def run(_courseCode, _lectureNumber):
             
         # Model
         model = Sequential()
-        model.weights.clear()
-        model.add(LSTM(8, input_shape=(timestep,dim)))
+        model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
+        model.add(LSTM(4, input_shape=(timestep,dim)))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
