@@ -300,19 +300,19 @@ def run():
 
     # Training
     model1 = train1(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model1, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
+    saveModel(model1, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
 
     model2 = train2(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model2, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
+    saveModel(model2, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
 
     model3 = train3(dataX.reshape(len(dataX),6), dataY, 6)
-    saveModel(model3, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
+    saveModel(model3, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
 
     model4 = train4(dataX,dataY,3,2)
-    saveModel(model4, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
+    saveModel(model4, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
 
     model5 = train5(dataX,dataY,3,2)
-    saveModel(model5, COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
+    saveModel(model5, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
 
 
     # Main execution

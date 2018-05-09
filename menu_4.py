@@ -175,11 +175,11 @@ def run():
     ##### prediction #####
     print("Prediction!!!")
     print("Loading model")
-    final_model_1 = readModel(COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
-    final_model_2 = readModel(COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
-    final_model_3 = readModel(COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
-    final_model_4 = readModel(COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
-    final_model_5 = readModel(COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
+    final_model_1 = readModel("models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
+    final_model_2 = readModel("models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
+    final_model_3 = readModel("models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
+    final_model_4 = readModel("models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model4")
+    final_model_5 = readModel("models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model5")
 
     # Prepare data for prediction
     # time_slot = TIME_SLOT.split(" ")
