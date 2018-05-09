@@ -1,6 +1,7 @@
 import pymongo
 import collections
 import datetime
+import pickle
 
 host = "127.0.0.1"
 database_name = "hkust"
@@ -12,8 +13,6 @@ db = client[database_name]
 print("Database Connected")
 
 def arr(_in): return [x for x in _in]
-
-# def mergeDict(x,y): return {**x, **y}
 
 
 course = arr(db.courses.aggregate([
@@ -27,7 +26,12 @@ course = arr(db.courses.aggregate([
     }}} 
 ]))
 
-# print(course)
 
 courseList = [x["_id"] for x in arr(course)]
 print(courseList)
+
+
+with open('courseList.pickle', 'wb') as handle:
+    pickle.dump(courseList, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+print("courseList Saved")

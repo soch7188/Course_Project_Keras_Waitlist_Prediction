@@ -281,4 +281,16 @@ def run(_courseCode, _lectureNumber):
     return
 
 
-run("COMP4632","L1")
+# Load course list
+
+
+with open('courseList.pickle', 'rb') as handle:
+    courseList = pickle.load(handle)
+
+
+print(courseList)
+
+for course in courseList:
+    run(course["code"],course["sectionId"])
+
+# run("COMP4632","L1")
