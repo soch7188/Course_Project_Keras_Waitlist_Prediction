@@ -156,6 +156,7 @@ def run(_courseCode, _lectureNumber):
 
 
     ##### MODELS #####
+    # Sequential.weights.
 
     # Model 1
     def train1(X,Y,_dim):
@@ -165,12 +166,13 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
+        model.weights.clear()
         model.add(Dense(8, input_dim=_dim, activation='relu'))
-        model.add(Dense(8, activation='relu'))
+        model.add(Dense(4, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
         model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
-        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
+        model.fit(X, Y, epochs=50, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
@@ -185,12 +187,12 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
+        model.weights.clear()
         model.add(Dense(16, input_dim=_dim, activation='relu'))
         model.add(Dense(8, activation='relu'))
-        model.add(Dense(4, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="mean_squared_error", optimizer="rmsprop", metrics=["mae"])
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
@@ -206,11 +208,12 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
-        model.add(Dense(8, input_dim=_dim, activation='relu')) 
-        model.add(Dense(4, activation='sigmoid'))
+        model.weights.clear()
+        model.add(Dense(16, input_dim=_dim, activation='relu'))
+        model.add(Dense(8, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
@@ -225,11 +228,20 @@ def run(_courseCode, _lectureNumber):
             
         # Model
         model = Sequential()
+        model.weights.clear()
         model.add(LSTM(4, input_shape=(timestep,dim)))
         model.add(Dropout(0.2))
         model.add(Dense(1, activation='relu'))
-        model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
         model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
+
+        # Model
+        # model = Sequential()
+        # model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
+        # model.add(LSTM(2))
+        # model.add(Dense(1, activation='relu'))
+        # model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        # model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
 
         # Ealuation
         scores = model.evaluate(X, Y)
@@ -244,6 +256,7 @@ def run(_courseCode, _lectureNumber):
             
         # Model
         model = Sequential()
+        model.weights.clear()
         model.add(LSTM(8, input_shape=(timestep,dim)))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
@@ -255,20 +268,20 @@ def run(_courseCode, _lectureNumber):
         
         return model
 
-    
-
+    dataX_NN = dataX.reshape(len(dataX), 6)
+    dataY_NN = dataY.reshape(len(dataY), 1)
 
     # Training
     print("Model 1 Training Start")
-    model1 = train1(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
+    model1 = train1(dataX_NN, dataY_NN, 6)
     saveModel(model1, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model1")
 
     print("Model 2 Training Start")
-    model2 = train2(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
+    model2 = train2(dataX_NN, dataY_NN, 6)
     saveModel(model2, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model2")
 
     print("Model 3 Training Start")
-    model3 = train3(dataX.reshape(len(dataX),6), dataY.reshape(len(dataY), 1), 6)
+    model3 = train3(dataX_NN, dataY_NN, 6)
     saveModel(model3, "models/"+COURSE_CODE+"-"+LECTURE_NUMBER+"-"+"model3")
 
     print("Model 4 Training Start")
