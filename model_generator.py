@@ -186,10 +186,8 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model2 = Sequential()
-        model2.weights.clear()
-        model2.add(Dense(16, input_dim=_dim, activation='relu'))
-        model2.add(Dense(8, activation='relu'))
-        model2.add(Dense(8, activation='relu'))
+        model2.add(Dense(32, input_dim=_dim, activation='relu'))
+        model2.add(Dense(16, activation='relu'))
         model2.add(Dense(1, activation='relu'))
 
         model2.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
@@ -208,12 +206,12 @@ def run(_courseCode, _lectureNumber):
         # print(X[0])
 
         model = Sequential()
-        model.add(Dense(16, input_dim=_dim, activation='relu'))
+        model.add(Dense(3, input_dim=_dim, activation='relu'))
         model.add(Dense(8, activation='relu'))
         model.add(Dense(1, activation='relu'))
 
-        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["accuracy"])
-        model.fit(X, Y, epochs=30, batch_size=4, validation_split=0.2)
+        model.compile(loss="mean_squared_error", optimizer="adam", metrics=["mae"])
+        model.fit(X, Y, epochs=30, batch_size=5, validation_split=0.2)
 
         scores = model.evaluate(X, Y)
         # print("{}: {}".format(model.metrics_names[1], scores[1]*100))
@@ -254,7 +252,7 @@ def run(_courseCode, _lectureNumber):
             
         # Model
         model = Sequential()
-        model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
+        # model.add(LSTM(3, return_sequences=True, input_shape=(timestep, dim)))
         model.add(LSTM(4, input_shape=(timestep,dim)))
         model.add(Dense(1, activation='relu'))
         model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["mae"])
